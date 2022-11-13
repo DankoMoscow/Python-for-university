@@ -74,40 +74,19 @@ class Character:
             
 class Monster(Character):
     def __init__(self, first_coor_monster, second_coor_monster):
+        Character.__init__(self, first_coor_monster, second_coor_monster)
         self.first_coor_monster = first_coor_monster
         self.second_coor_monster = second_coor_monster
-        
+
     def __str__(self):
         return f'Новые координаты монстра: {int(self.first_coor_monster)}, {int(self.second_coor_monster)}'
                 
     def move(self):
         global key_list, direction
         direction = random.choices(key_list)[0]
-        if direction == 'w':
-            if self.second_coor_monster > 1:
-                self.second_coor_monster -= 1
-            else:
-                self.second_coor_monster = self.second_coor_monster
-      
-        elif direction == 's':
-            if self.second_coor_monster < height:
-                self.second_coor_monster += 1
-            else:
-                self.second_coor_monster = self.second_coor_monster
+        super().move(direction)
 
-        elif direction == 'd':
-            if self.first_coor_monster < width:
-                self.first_coor_monster += 1
-            else:
-                self.first_coor_monster = self.first_coor_monster
 
-        elif direction == 'a':
-            if self.first_coor_monster > 1:
-                self.first_coor_monster -= 1
-            else:
-                self.first_coor_monster = self.first_coor_monster 
-    
-    
 def main():    
     global width, height
     width = (input('Введите ширину: '))
@@ -160,28 +139,14 @@ def main():
                 key = input('Введите направление движения персонажа: w/a/s/d ') 
                      
             character.move(key)
-            if key == 'w' and character.second_coor <= 1:
-                print("Нельзя выходить за пределы поля. Положение не изменилось")
-            elif key == 's' and character.second_coor >= height:
-                print("Нельзя выходить за пределы поля. Положение не изменилось")
-            elif key == 'd' and character.first_coor >= width:
-                print("Нельзя выходить за пределы поля. Положение не изменилось")
-            elif key == 'a' and character.first_coor <= 1:
+            if (key == 'w' and character.second_coor <= 1) or (key == 's' and character.second_coor >= height) or \
+                (key == 'd' and character.first_coor >= width) or (key == 'a' and character.first_coor <= 1):
                 print("Нельзя выходить за пределы поля. Положение не изменилось")
 
             monster.move()
-            if direction == 'w' and monster.second_coor_monster <= 1:
+            if (direction == 'w' and monster.second_coor_monster <= 1) or (direction == 's' and monster.second_coor_monster >= height) \
+                or (direction == 'd' and monster.first_coor_monster >= width) or (direction == 'a' and monster.first_coor_monster <= 1):
                 print("Замечена попытка монстра слинять за пределы поля. Положение не изменилось")
-      
-            elif direction == 's' and monster.second_coor_monster >= height:
-                print("Замечена попытка монстра слинять за пределы поля. Положение не изменилось")
-    
-            elif direction == 'd' and monster.first_coor_monster >= width:
-                print("Замечена попытка монстра слинять за пределы поля. Положение не изменилось")
-    
-            elif direction == 'a' and monster.first_coor_monster <= 1:
-                print("Замечена попытка монстра слинять за пределы поля. Положение не изменилось")
-                    
                 
             coordinate = Coordinate(character.first_coor, character.second_coor) 
             coordinate_monster = Coordinate(monster.first_coor_monster, monster.second_coor_monster)
